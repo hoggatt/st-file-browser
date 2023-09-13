@@ -5,7 +5,7 @@ with open('README.md') as f:
 
 setuptools.setup(
     name="st-file-browser",
-    version="0.1.0",
+    version="0.1.1",
     author="hoggatt",
     author_email="",
     description="A streamlit file browser",
