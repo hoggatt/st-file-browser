@@ -11,9 +11,7 @@ CACHE_FILE_NAME = ".st-tree.cache"
 
 parent_dir = os.path.dirname(os.path.abspath(__file__))
 build_dir = os.path.join(parent_dir, "frontend/build")
-_component_func = components.declare_component(
-    "st_file_browser", path=build_dir
-)
+_component_func = components.declare_component("st_file_browser", path=build_dir)
 
 
 def _get_file_info(root, path):
@@ -86,26 +84,27 @@ def st_file_browser(
     limit=10000,
     key=None,
     use_cache=False,
-    override_files=None
+    override_files=None,
 ):
     extentions = tuple(extentions) if extentions else None
     root = pathlib.Path(os.path.abspath(path))
-    files = ensure_tree_cache(
-        path,
-        glob_patterns,
-        file_ignores,
-        limit,
-        use_cache=use_cache,
-    )
 
     if override_files is None:
+        files = ensure_tree_cache(
+            path,
+            glob_patterns,
+            file_ignores,
+            limit,
+            use_cache=use_cache,
+        )
+
         files = (
             [file for file in files if str(file["path"]).endswith(extentions)]
             if extentions
             else files
         )
     else:
-        files = override_files
+        files = [_get_file_info(str(root), str(fl)) for fl in override_files]
 
     event = _component_func(
         files=files,
@@ -119,12 +118,7 @@ def st_file_browser(
     if event:
         if event["type"] == "SELECT_FILE" and (
             (not select_filetype_ignores)
-            or (
-                not any(
-                    event["target"]["path"].endswith(ft)
-                    for ft in select_filetype_ignores
-                )
-            )
+            or (not any(event["target"]["path"].endswith(ft) for ft in select_filetype_ignores))
         ):
             file = event["target"]
             if "path" in file:
@@ -132,6 +126,4 @@ def st_file_browser(
                     st.warning(f"File {file['path']} not found")
                     return event
 
-
     return event
-
