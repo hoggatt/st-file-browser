@@ -76,11 +76,7 @@ def st_file_browser(
     file_ignores=None,
     select_filetype_ignores=None,
     extentions=None,
-    show_delete_file=False,
     show_choose_file=False,
-    show_download_file=True,
-    show_new_folder=False,
-    show_upload_file=False,
     limit=10000,
     key=None,
     use_cache=False,
@@ -108,9 +104,8 @@ def st_file_browser(
 
     event = _component_func(
         files=files,
+        path=path,
         show_choose_file=show_choose_file,
-        show_download_file=show_download_file,
-        show_delete_file=show_delete_file,
         ignore_file_select_event=ignore_file_select_event,
         key=key,
     )

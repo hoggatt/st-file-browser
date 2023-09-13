@@ -54,11 +54,7 @@ interface State {
 interface IArgs {
   files: File[]
   path: string
-  show_download_file: boolean
-  show_delete_file: boolean
   show_choose_file: boolean
-  show_new_folder: boolean
-  show_upload_file: boolean
   ignore_file_select_event: boolean
 }
 
@@ -106,23 +102,6 @@ class FileBrowserNative extends StreamlitComponentBase<State> {
     }
   }
 
-  deleteFileHandler = (fileKey: string | string[]) => {
-    const files = this.args.files.filter((file) => typeof fileKey === 'string' ? fileKey === file.path : fileKey.includes(file.path))
-    console.log("deleteFileHandler", "key", fileKey, "files ", files)
-
-    files.length &&
-      noticeStreamlit({ type: StreamlitEventType.DELETE_FILE, target: files })
-
-    const remainingFiles = this.args.files.filter((file) => typeof fileKey === 'string' ? fileKey !== file.path : !fileKey.includes(file.path))
-    this.args.files = remainingFiles
-  }
-
-  chooseHandler = (keys: string[]) => {
-    const files = this.args.files.filter((file) => keys.includes(file.path))
-    files.length &&
-      noticeStreamlit({ type: StreamlitEventType.CHOOSE_FILE, target: files })
-  }
-
   convertFiles = (files: File[]): FileBrowserFile[] =>
     files.map((file) => ({
       key: file.path,
@@ -145,22 +124,11 @@ class FileBrowserNative extends StreamlitComponentBase<State> {
           onFolderOpen={this.folderOpenHandler}
           onFolderClose={this.folderCloseHandler}
           onSelect={this.fileSelectedHandler}
-          onDeleteFile={this.deleteFileHandler}
           actionRenderer={(...args: any) => {
             return Actions({
               ...args[0],
               ...{
                 canChooseFile: that.args.show_choose_file,
-                canDownloadFile: false,
-                canDeleteFile: that.args.show_delete_file,
-                onChooseFile: (keys: string[]) =>
-                  that.chooseHandler(
-                    args[0].selectedItems.map((i: any) => i.key)
-                  ),
-                onDeleteFile: (fileKey: string[]) =>
-                  that.deleteFileHandler(
-                      args[0].selectedItems.map((i: any) => i.key)
-                  ),
               },
             })
           }}
