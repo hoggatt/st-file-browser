@@ -86,6 +86,7 @@ def st_file_browser(
     limit=10000,
     key=None,
     use_cache=False,
+    override_files=None
 ):
     extentions = tuple(extentions) if extentions else None
     root = pathlib.Path(os.path.abspath(path))
@@ -97,11 +98,14 @@ def st_file_browser(
         use_cache=use_cache,
     )
 
-    files = (
-        [file for file in files if str(file["path"]).endswith(extentions)]
-        if extentions
-        else files
-    )
+    if override_files is None:
+        files = (
+            [file for file in files if str(file["path"]).endswith(extentions)]
+            if extentions
+            else files
+        )
+    else:
+        files = override_files
 
     event = _component_func(
         files=files,
