@@ -14,7 +14,7 @@
     "prop-types": "^15.8.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-keyed-file-browser": "^1.14.0",
+    "react-keyed-file-browser": "github:Dev-iL/react-keyed-file-browser#e4ba8d91",
     "react-scripts": "3.4.1",
     "streamlit-component-lib": "^1.4.0",
     "typescript": "^4.2.0"

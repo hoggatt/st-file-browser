@@ -81,6 +81,8 @@ def st_file_browser(
     key=None,
     use_cache=False,
     override_files=None,
+    sort_by="name",
+    sort_dir="asc",
 ):
     extentions = tuple(extentions) if extentions else None
     root = pathlib.Path(os.path.abspath(path))
@@ -108,6 +110,8 @@ def st_file_browser(
         show_choose_file=show_choose_file,
         ignore_file_select_event=ignore_file_select_event,
         key=key,
+        sort_by=sort_by,
+        sort_dir=sort_dir,
     )
 
     if event:
